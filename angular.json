@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "one-step-gps-map"
+    }
+  },
+  "defaultProject": "one-step-gps-map",
+  "cli": {
+    "analytics": "0be8dedd-7316-4b7e-9656-b31aef8fec13"
+  }
 }
