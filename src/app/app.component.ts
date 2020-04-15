@@ -14,5 +14,7 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.oneStepGpsService.devices().subscribe(console.log);
+
+    this.oneStepGpsService.devicePoints('').subscribe(console.log);
   }
 }
