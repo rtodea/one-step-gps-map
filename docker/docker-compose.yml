@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: one-step-gps-nginx-wrapper
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    volumes:
+      - "./nginx/cache:/var/nginx/cache"
+    ports:
+      - "4201:80"
+    extra_hosts:
+      - "angular:172.172.172.172"
