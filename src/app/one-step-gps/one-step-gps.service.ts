@@ -38,7 +38,8 @@ export type Device = {
 };
 
 export type DevicePoint = {
-
+  lat: number;
+  lng: number;
 };
 
 export type ServerInterval = {
@@ -116,6 +117,7 @@ export class OneStepGpsService {
     const parsedUrl = urlParse(baseUrl);
     parsedUrl.set('query', {
       device_id: deviceId,
+      return_count: true,
       ...this.fromIntervalToServerInterval(interval),
     });
     return parsedUrl.toString();
