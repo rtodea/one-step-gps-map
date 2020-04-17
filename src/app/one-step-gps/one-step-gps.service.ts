@@ -3,6 +3,7 @@ import { EnvironmentService, ONE_STEP_GPS_API_KEY, ONE_STEP_GPS_API_URL } from '
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as urlParse from 'url-parse';
+import * as R from 'ramda';
 
 export type UrlString = string;
 
@@ -40,15 +41,39 @@ export type DevicePoint = {
 
 };
 
+export type ServerInterval = {
+  dt_server_from: DateHourTZ;
+  dt_server_to: DateHourTZ;
+};
+
+export type DevicePointOptions = {
+  device_id: DeviceId
+  device_id_list:	DeviceId[],
+
+  limit: number; // 100 default
+  offset: number;
+  return_count: boolean;
+
+  dt_tracker_from: DateHourTZ;
+  dt_tracker_to: DateHourTZ;
+
+  sort: 'sequence,desc' | 'sequence'
+} & ServerInterval;
+
 export type ResultList<T> = {
   result_list: T[];
+};
+
+export type Interval = {
+  start: DateHourTZ,
+  end?: DateHourTZ,
 };
 
 @Injectable({
   providedIn: 'root'
 })
 export class OneStepGpsService {
-  private apiKey: string;
+  private readonly apiKey: string;
 
   private apiUrl: UrlString;
 
@@ -78,12 +103,12 @@ export class OneStepGpsService {
     ].join('/');
   }
 
-  devicePoints(deviceId: DeviceId): Observable<ResultList<DevicePoint>> {
+  devicePoints(deviceId: DeviceId, interval?: Interval): Observable<ResultList<DevicePoint>> {
     return this.httpClient.get<ResultList<DevicePoint>>(
-      this.devicePointsUrl(deviceId), this.authorizationHeaders());
+      this.devicePointsUrl(deviceId, interval), this.authorizationHeaders());
   }
 
-  devicePointsUrl(deviceId: DeviceId): UrlString {
+  devicePointsUrl(deviceId: DeviceId, interval?: Interval): UrlString {
     const baseUrl = [
       this.apiUrl,
       'device-point'
@@ -91,7 +116,21 @@ export class OneStepGpsService {
     const parsedUrl = urlParse(baseUrl);
     parsedUrl.set('query', {
       device_id: deviceId,
+      ...this.fromIntervalToServerInterval(interval),
     });
     return parsedUrl.toString();
+  }
+
+  fromIntervalToServerInterval(interval: Interval): Partial<ServerInterval>{
+    const serverInterval: Partial<ServerInterval> = {};
+    if (R.isNil(interval) || R.isEmpty(interval)) { return {}; }
+    if (interval.start) {
+      serverInterval.dt_server_from = interval.start;
+    }
+    if (interval.end) {
+      serverInterval.dt_server_to = interval.end;
+    }
+
+    return serverInterval;
   }
 }

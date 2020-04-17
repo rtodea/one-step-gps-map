@@ -31,6 +31,15 @@ describe('OneStepGpsService', () => {
       .toBe('http://localhost:4201/track/v3/api/public/device-point?device_id=6dCt9ZZ2NXHeRk81f07-0-');
   });
 
+  it('should add the correct interval', () => {
+    expect(service.devicePointsUrl('6dCt9ZZ2NXHeRk81f07-0-', {
+      start: '2018-09-27T00:00:00.0Z'
+    })).toBe(
+      'http://localhost:4201/track/v3/api/public/device-point' +
+      '?device_id=6dCt9ZZ2NXHeRk81f07-0-' +
+      '&dt_server_from=2018-09-27T00:00:00.0Z');
+  });
+
   // we want to make a difference between
   // IMEI: 4762022264
   // deviceId: '6dCt9ZZ2NXHeRk81f07-0-'
