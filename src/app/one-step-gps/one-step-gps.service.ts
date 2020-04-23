@@ -45,6 +45,9 @@ export type DevicePoint = {
 export type ServerInterval = {
   dt_server_from: DateHourTZ;
   dt_server_to: DateHourTZ;
+
+  dt_tracker_from: DateHourTZ;
+  dt_tracker_to: DateHourTZ;
 };
 
 export type DevicePointOptions = {
@@ -106,7 +109,8 @@ export class OneStepGpsService {
 
   devicePoints(deviceId: DeviceId, interval?: Interval): Observable<ResultList<DevicePoint>> {
     return this.httpClient.get<ResultList<DevicePoint>>(
-      this.devicePointsUrl(deviceId, interval), this.authorizationHeaders());
+      this.devicePointsUrl(deviceId, interval), this.authorizationHeaders()
+    );
   }
 
   devicePointsUrl(deviceId: DeviceId, interval?: Interval): UrlString {
@@ -127,10 +131,10 @@ export class OneStepGpsService {
     const serverInterval: Partial<ServerInterval> = {};
     if (R.isNil(interval) || R.isEmpty(interval)) { return {}; }
     if (interval.start) {
-      serverInterval.dt_server_from = interval.start;
+      serverInterval.dt_tracker_from = interval.start;
     }
     if (interval.end) {
-      serverInterval.dt_server_to = interval.end;
+      serverInterval.dt_tracker_to = interval.end;
     }
 
     return serverInterval;
