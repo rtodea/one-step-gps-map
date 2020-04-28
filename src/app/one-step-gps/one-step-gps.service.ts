@@ -50,6 +50,13 @@ export type ServerInterval = {
   dt_tracker_to: DateHourTZ;
 };
 
+export type DeviceOptions = {
+  limit: number; // 4999
+  user_id: string;
+  latest_point: boolean;
+  vuid: string; // 6dt7xZRjNfyzKk81f07-0-
+};
+
 export type DevicePointOptions = {
   device_id: DeviceId
   device_id_list:	DeviceId[],
