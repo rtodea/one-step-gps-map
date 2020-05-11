@@ -96,7 +96,7 @@ export class OneStepGpsService {
 
   devices(): Observable<ResultList<Device>> {
     return this.httpClient.get<ResultList<Device>>(
-      this.devicesUrl(), this.authorizationHeaders());
+      this.devicesWithLastPositionUrl(), this.authorizationHeaders());
   }
 
   authorizationHeaders(): {headers: {[key: string]: string}} {
@@ -112,6 +112,14 @@ export class OneStepGpsService {
       this.apiUrl,
       'device',
     ].join('/');
+  }
+
+  devicesWithLastPositionUrl(): UrlString {
+    const parsedUrl = urlParse(this.devicesUrl());
+    parsedUrl.set('query', {
+      latest_point: true,
+    });
+    return parsedUrl.toString();
   }
 
   devicePoints(deviceId: DeviceId, interval?: Interval): Observable<ResultList<DevicePoint>> {
