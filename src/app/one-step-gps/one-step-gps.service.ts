@@ -27,7 +27,8 @@ export type Device = {
   delivered_at: Maybe<DateHourTZ>
   factory_id: FactoryId
   active_state: ActiveState
-  display_name: DisplayName
+  display_name: DisplayName,
+  online: boolean,
   bcc_id: string
   make: string
   model: string

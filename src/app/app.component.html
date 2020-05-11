@@ -1,1 +1,14 @@
-<app-map></app-map>
+<mat-toolbar>
+  <span>Third Party AVL API Explorer</span>
+</mat-toolbar>
+
+<mat-drawer-container>
+  <mat-drawer mode="side" opened>
+    <app-one-step-gps-device-list>
+    </app-one-step-gps-device-list>
+  </mat-drawer>
+
+  <mat-drawer-container>
+    <app-map></app-map>
+  </mat-drawer-container>
+</mat-drawer-container>
