@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --disableHostCheck",
+    "start": "start-test ng-server-start 4200 docker-start",
+    "ng-server-start": "ng serve --host 0.0.0.0 --disableHostCheck",
     "build": "ng build",
     "docker-alias-macos": "sudo ifconfig en0 alias 172.172.172.172/24 up",
     "docker-start": "cd docker; docker-compose up --build",
@@ -51,6 +52,7 @@
     "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "start-server-and-test": "^1.11.0"
   }
 }
