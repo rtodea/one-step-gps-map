@@ -1,6 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { OneStepGpsService } from './one-step-gps/one-step-gps.service';
 import { LeafletService } from './core/leaflet.service';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,12 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.oneStepGpsService.devices().subscribe(console.log);
+    this.oneStepGpsService.devices().pipe(map(({result_list}) => (result_list))).subscribe((devices) => {
+      console.log('All Devices ' + devices.length, devices);
+      console.log('Ones with `latest_device_point` ' + devices.length, devices);
+      console.log(devices.filter((d) => d.latest_device_point));
+    });
+
     const deviceName = 'Gene - OBDII - New';
     const deviceId = '6dCt9ZZ2NXHeRk81f07-0-';
     const queryParamsFromUI = 'dtf=2020-04-16T07%3A00%3A00.000Z&dtt=2020-04-17T07%3A00%3A00.000Z';
