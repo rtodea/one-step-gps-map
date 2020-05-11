@@ -10,7 +10,7 @@ export class EnvironmentService {
   private innerMap = new Map();
 
   constructor() {
-    this.set(ONE_STEP_GPS_API_KEY, 'kWHzHnN10Zy4z2z93cu0EgVm5bSsSFhw5NfYMHCgmzo');
+    this.set(ONE_STEP_GPS_API_KEY, 'gNccrCTJrOQCkGf-baf3d6udv4aOx261rINHrJg3kF0');
     // this.set(ONE_STEP_GPS_API_URL, 'https://track.onestepgps.com/v3/api/public');
     this.set(ONE_STEP_GPS_API_URL, 'http://localhost:4201/track/v3/api/public');
   }
