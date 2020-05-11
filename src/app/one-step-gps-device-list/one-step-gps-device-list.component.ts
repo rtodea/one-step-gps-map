@@ -23,10 +23,21 @@ export function fromTreeNodeToExpandableTreeNode(node: TreeNode, level: number):
   };
 }
 
+export function fromObjectToTreeNode<T>(object: T): TreeNode[] {
+  if (R.isNil(object) || R.isEmpty(object) || R.not(R.is(Object, object))) { return []; }
+  return R.pipe(
+    R.toPairs,
+    R.map(([key, value]) => ({
+      name: R.is(Object, value) ? `${key}: ...` : `${key}: ${value}`,
+      children: fromObjectToTreeNode(value),
+    }))
+  )(object);
+}
+
 export function fromDeviceToTreeNode(device: Device): TreeNode {
   return {
     name: device.display_name,
-    children: []
+    children: fromObjectToTreeNode<Device>(device),
   };
 }
 
@@ -36,34 +47,6 @@ export function fromDeviceToTreeNode(device: Device): TreeNode {
   styleUrls: ['./one-step-gps-device-list.component.css']
 })
 export class OneStepGpsDeviceListComponent implements OnInit {
-  treeNodes: TreeNode[] = [
-    {
-      name: 'Fruit',
-      children: [
-        {name: 'Apple', children: []},
-        {name: 'Banana', children: []},
-        {name: 'Fruit loops', children: []},
-      ]
-    }, {
-      name: 'Vegetables',
-      children: [
-        {
-          name: 'Green',
-          children: [
-            {name: 'Broccoli', children: []},
-            {name: 'Brussels sprouts', children: []},
-          ]
-        }, {
-          name: 'Orange',
-          children: [
-            {name: 'Pumpkins', children: []},
-            {name: 'Carrots', children: []},
-          ]
-        },
-      ]
-    },
-  ];
-
   treeControl = new FlatTreeControl<ExpandableTreeNode>(
     R.prop('level'),
     R.prop('expandable'),
@@ -83,16 +66,16 @@ export class OneStepGpsDeviceListComponent implements OnInit {
 
   constructor(oneStepGpsService: OneStepGpsService) {
     oneStepGpsService.devices().subscribe(({result_list}) => {
-      const [onlineDevice, offlineDevices] = R.pipe(
+      const [onlineDevices, offlineDevices] = R.pipe(
         R.partition<Device>(R.prop('online')),
         R.map((partition: Device[]) => partition.map(fromDeviceToTreeNode))
       )(result_list);
 
       this.treeDataSource.data = [{
-        name: 'Online Devices',
-        children: onlineDevice,
+        name: `Online Devices (${onlineDevices.length})`,
+        children: onlineDevices,
       }, {
-        name: 'Offline Devices',
+        name: `Offline Devices (${offlineDevices.length})`,
         children: offlineDevices
       }];
     });

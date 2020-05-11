@@ -21,19 +21,22 @@ export type ActiveState = 'active';
 
 export type Device = {
   device_id: DeviceId
+  display_name: DisplayName,
+
   created_at: Maybe<DateHourTZ>
   updated_at: DateHourTZ
   activated_at: Maybe<DateHourTZ>
   delivered_at: Maybe<DateHourTZ>
-  factory_id: FactoryId
+
   active_state: ActiveState
-  display_name: DisplayName,
   online: boolean,
-  bcc_id: string
+
   make: string
+  factory_id: FactoryId
   model: string
   conn_type: string,
   secondary_id: string,
+  bcc_id: string
   latest_device_point: Maybe<any>,
   latest_accurate_device_point: Maybe<any>,
 };
