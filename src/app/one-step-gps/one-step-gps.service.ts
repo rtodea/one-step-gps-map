@@ -42,9 +42,12 @@ export type Device = {
   latest_accurate_device_point: Maybe<any>,
 };
 
+export type ISO8601DateString = string;
+
 export type DevicePoint = {
   lat: number; // -180 180
   lng: number; // -90 90 NumberBetweenMinus90And90
+  dt_tracker: ISO8601DateString;
 };
 
 export type ServerInterval = {
@@ -66,7 +69,7 @@ export type DevicePointOptions = {
   device_id: DeviceId
   device_id_list:	DeviceId[],
 
-  limit: number; // 100 default
+  limit: number; // 100 default, 5000 maximum
   offset: number;
   return_count: boolean;
 
@@ -142,6 +145,7 @@ export class OneStepGpsService {
     const parsedUrl = urlParse(baseUrl);
     parsedUrl.set('query', {
       device_id: deviceId,
+      limit: 5000,
       return_count: true,
       ...this.fromIntervalToServerInterval(interval),
     });
@@ -161,15 +165,21 @@ export class OneStepGpsService {
     return serverInterval;
   }
 
-  toConsoleTable(d: Device) {
+  fromDeviceToConsoleTable(d: Device) {
     return [d.display_name, `${d.device_id}`, `${d.latest_device_point.lat}, ${d.latest_device_point.lng}`];
   }
 
-  printOutTable(devices: Device[], tableName: string) {
-    console.log(tableName);
-    console.table(devices.map(this.toConsoleTable));
+  fromDevicePointToConsoleTable(dp: DevicePoint) {
+    return [`${dp.lat}, ${dp.lng}, ${dp.dt_tracker}`];
   }
 
-  printOutPointTable(devicePoints: DevicePoint[], tableName: string) {
+  printOutTable(devices: Device[], tableName: string):void {
+    console.log(tableName);
+    console.table(devices.map(this.fromDeviceToConsoleTable));
+  }
+
+  printOutPointTable(devicePoints: DevicePoint[], tableName: string): void {
+    console.log(tableName, `(${devicePoints.length})`);
+    console.table(R.takeLast(100, devicePoints).map(this.fromDevicePointToConsoleTable));
   }
 }

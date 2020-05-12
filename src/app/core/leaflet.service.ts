@@ -1,5 +1,6 @@
 import { ElementRef, Injectable } from '@angular/core';
 import * as L from 'leaflet';
+import {DevicePoint} from "../one-step-gps/one-step-gps.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +21,6 @@ export class LeafletService {
                 maxZoom: number = 18) {
     this.map = L.map(el.nativeElement)
       .setView([lat, long], zoom);
-
-    // L.tileLayer(`https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=${this.apiKey}`, {
-    //   attribution: this.attribution,
-    //   maxZoom: 18,
-    //   id: 'mapbox.streets'
-    // }).addTo(this.map);
 
     L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
       maxZoom: 20,
@@ -55,6 +50,11 @@ export class LeafletService {
     }).addTo(this.map);
   }
 
+  addLocationPoint({lat, lng}: DevicePoint) {
+    const pointColor = '#27b76d';
+    this.addCircle(lat, lng, pointColor, pointColor, 1, 0.9);
+  }
+
   addPolygon(latlngs: L.LatLngExpression[] | L.LatLngExpression[][]) {
     L.polygon(latlngs).addTo(this.map);
   }
@@ -62,5 +62,9 @@ export class LeafletService {
   registerClick(message: string) {
     const onMapClick = (e) => alert(`${message} ${e.latlng}`);
     this.map.on('click', onMapClick);
+  }
+
+  jumpToPoint({lat, lng}: DevicePoint) {
+    this.map.flyTo([lat, lng]);
   }
 }

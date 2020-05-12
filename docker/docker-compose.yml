@@ -11,4 +11,4 @@ services:
     ports:
       - "4201:80"
     extra_hosts:
-      - "angular:172.172.172.172"
+            - "angular:${DOCKERHOST:-172.172.172.172}"
