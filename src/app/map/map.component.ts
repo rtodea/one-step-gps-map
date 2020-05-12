@@ -13,8 +13,8 @@ export class MapComponent implements AfterViewInit {
   constructor(private leaflet: LeafletService) { }
 
   ngAfterViewInit(): void {
-    const lat = 34.204787599999996;
-    const lng = -118.39710219999999;
+    const lat = 45.066080799999995;
+    const lng = -93.30076849999999;
     this.leaflet.initializeMap(this.mapElement, lat, lng);
     // this.leaflet.addPopupMarker(51.5, -0.09, "<b>Hello world!</b><br>I am a popup.");
     this.leaflet.addCircle(51.508, -0.11, 'red', '#ff0033', 0.5, 500);

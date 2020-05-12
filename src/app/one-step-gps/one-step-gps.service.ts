@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as urlParse from 'url-parse';
 import * as R from 'ramda';
+import { LeafletService } from '../core/leaflet.service';
 
 export type UrlString = string;
 
@@ -42,8 +43,8 @@ export type Device = {
 };
 
 export type DevicePoint = {
-  lat: number;
-  lng: number;
+  lat: number; // -180 180
+  lng: number; // -90 90 NumberBetweenMinus90And90
 };
 
 export type ServerInterval = {
@@ -93,7 +94,8 @@ export class OneStepGpsService {
   private apiUrl: UrlString;
 
   constructor(private environmentService: EnvironmentService,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private leafletService: LeafletService) {
     this.apiKey = this.environmentService.get(ONE_STEP_GPS_API_KEY);
     this.apiUrl = this.environmentService.get<UrlString>(ONE_STEP_GPS_API_URL);
   }
@@ -157,5 +159,17 @@ export class OneStepGpsService {
     }
 
     return serverInterval;
+  }
+
+  toConsoleTable(d: Device) {
+    return [d.display_name, `${d.device_id}`, `${d.latest_device_point.lat}, ${d.latest_device_point.lng}`];
+  }
+
+  printOutTable(devices: Device[], tableName: string) {
+    console.log(tableName);
+    console.table(devices.map(this.toConsoleTable));
+  }
+
+  printOutPointTable(devicePoints: DevicePoint[], tableName: string) {
   }
 }

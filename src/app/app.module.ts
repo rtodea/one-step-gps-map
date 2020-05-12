@@ -11,24 +11,39 @@ import { MatTreeModule } from '@angular/material/tree';
 import { OneStepGpsDeviceListComponent } from './one-step-gps-device-list/one-step-gps-device-list.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { PositionHistoryComponent } from './position-history/position-history.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    OneStepGpsDeviceListComponent
+    OneStepGpsDeviceListComponent,
+    PositionHistoryComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatInputModule,
     MatSidenavModule,
     MatTreeModule,
     MatButtonModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatMomentDateModule,
+    ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

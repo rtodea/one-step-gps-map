@@ -1,0 +1,26 @@
+<form [formGroup]="formGroup">
+  <mat-form-field class="example-full-width">
+    <mat-label>Tracking Device ID</mat-label>
+    <input formControlName="deviceId" matInput placeholder="" value="">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Start date</mat-label>
+    <input formControlName="startDate" matInput [matDatepicker]="startDatePicker">
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>End date</mat-label>
+    <input formControlName="endDate" matInput [matDatepicker]="endDatePicker">
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="onDraw()">draw</button>
+  <button mat-raised-button color="warn" (click)="onDelete()">delete</button>
+
+</form>
+
+
