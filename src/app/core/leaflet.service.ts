@@ -21,8 +21,16 @@ export class LeafletService {
                 maxZoom: number = 18) {
     this.map = L.map(el.nativeElement)
       .setView([lat, long], zoom);
-
-    L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+    /**
+     * h = roads only
+     * m = standard roadmap
+     * p = terrain
+     * r = somehow altered roadmap
+     * s = satellite only
+     * t = terrain only
+     * y = hybrid
+     */
+    L.tileLayer('http://{s}.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     }).addTo(this.map);
@@ -52,7 +60,7 @@ export class LeafletService {
 
   addLocationPoint({lat, lng}: DevicePoint) {
     const pointColor = '#27b76d';
-    this.addCircle(lat, lng, pointColor, pointColor, 1, 0.9);
+    this.addCircle(lat, lng, pointColor, pointColor, 1, 10);
   }
 
   addPolygon(latlngs: L.LatLngExpression[] | L.LatLngExpression[][]) {

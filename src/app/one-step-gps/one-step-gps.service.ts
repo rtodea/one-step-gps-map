@@ -98,7 +98,7 @@ export class OneStepGpsService {
 
   constructor(private environmentService: EnvironmentService,
               private httpClient: HttpClient,
-              private leafletService: LeafletService) {
+  ) {
     this.apiKey = this.environmentService.get(ONE_STEP_GPS_API_KEY);
     this.apiUrl = this.environmentService.get<UrlString>(ONE_STEP_GPS_API_URL);
   }
@@ -173,13 +173,17 @@ export class OneStepGpsService {
     return [`${dp.lat}, ${dp.lng}, ${dp.dt_tracker}`];
   }
 
-  printOutTable(devices: Device[], tableName: string):void {
+  printOutTable(devices: Device[], tableName: string): void {
     console.log(tableName);
     console.table(devices.map(this.fromDeviceToConsoleTable));
   }
 
   printOutPointTable(devicePoints: DevicePoint[], tableName: string): void {
     console.log(tableName, `(${devicePoints.length})`);
-    console.table(R.takeLast(100, devicePoints).map(this.fromDevicePointToConsoleTable));
+    const snapshot = R.concat(
+      R.slice(0, 10, devicePoints),
+      R.takeLast(10, devicePoints),
+    );
+    console.table(snapshot.map(this.fromDevicePointToConsoleTable));
   }
 }
